@@ -35,18 +35,26 @@ class TasksController extends Controller
 
         return view('tasks.create', ['task' => $task,]);
     }
-
-    /**
+    
+     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request)  
     {
+        
+        $this->validate($request, [
+            'content' => 'required|max:255',
+            'title' => 'required|max:255',
+            'status' => 'required|max10',
+        ]);
+        
         $task = new Task;    // これからDBに保存するために新しいモデルを作る
         $task->title = $request->title;    
-        $task->content = $request->content;    
+        $task->content = $request->content;  
+        $task->status = $request ->status;
         $task->save();   
 
         return redirect('/');  
@@ -60,9 +68,11 @@ class TasksController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id)    // ここの $id は urlの番号
     {
         $task = Task::find($id);  // id番目のタスクを取って渡す
+        // $task はテーブルのカラム情報を全部持ってる id/content/ etc....
+        // $task->id / $tadk->content とかで取得できる
 
         return view('tasks.show', ['task' => $task,]);
         
@@ -91,9 +101,17 @@ class TasksController extends Controller
      */
     public function update(Request $request, $id)
     {
+    
+        $this->validate($request, [
+            'content' => 'required|max:255',
+            'title' => 'required|max:255',
+            'status' => 'required|max10',
+        ]);
+        
         $task = Task::find($id);  // id番目のタスクをDBから取って渡す
         $task->title = $request->title;   
-        $task->content = $request->content;   
+        $task->content = $request->content;
+         $task->status = $request ->status;
         $task->save(); 
     }
 
