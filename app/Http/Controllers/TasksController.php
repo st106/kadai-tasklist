@@ -47,12 +47,12 @@ class TasksController extends Controller
         
         $this->validate($request, [
             'content' => 'required|max:255',
-            'title' => 'required|max:255',
-            'status' => 'required|max10',
+            
+            'status' => 'required|max:10',
         ]);
         
         $task = new Task;    // これからDBに保存するために新しいモデルを作る
-        $task->title = $request->title;    
+        
         $task->content = $request->content;  
         $task->status = $request ->status;
         $task->save();   
@@ -104,12 +104,12 @@ class TasksController extends Controller
     
         $this->validate($request, [
             'content' => 'required|max:255',
-            'title' => 'required|max:255',
-            'status' => 'required|max10',
+            
+            'status' => 'required|max:10',
         ]);
         
         $task = Task::find($id);  // id番目のタスクをDBから取って渡す
-        $task->title = $request->title;   
+        
         $task->content = $request->content;
          $task->status = $request ->status;
         $task->save(); 
